@@ -52,19 +52,15 @@ export default function VendorDashboardPage() {
   /* ================= DATA ================= */
   const vendorOrders = allOrderData.filter(
     (o: any) =>
-      String(o.productVendor?._id || o.productVendor) ===
-      String(userData._id)
+      String(o.productVendor?._id || o.productVendor) === String(userData._id),
   );
 
   const vendorProducts = allProductsData.filter(
-    (p: any) =>
-      String(p.vendor?._id || p.vendor) === String(userData._id)
+    (p: any) => String(p.vendor?._id || p.vendor) === String(userData._id),
   );
 
   const validOrders = vendorOrders.filter(
-    (o: any) =>
-      o.orderStatus !== "cancelled" &&
-      o.orderStatus !== "returned"
+    (o: any) => o.orderStatus !== "cancelled" && o.orderStatus !== "returned",
   );
 
   let totalSales = 0;
@@ -92,7 +88,7 @@ export default function VendorDashboardPage() {
     o.products.forEach((p: any) => {
       const t = p.product?.title || "Unknown";
       productSalesMap[t] = (productSalesMap[t] || 0) + p.quantity;
-    })
+    }),
   );
 
   const productSales = Object.keys(productSalesMap).map((t) => ({
@@ -104,24 +100,24 @@ export default function VendorDashboardPage() {
   const statusData = [
     {
       name: "Delivered",
-      value: vendorOrders.filter(o => o.orderStatus === "delivered").length,
+      value: vendorOrders.filter((o) => o.orderStatus === "delivered").length,
       color: "text-green-400",
     },
     {
       name: "Pending",
       value: vendorOrders.filter(
-        o => !["delivered","cancelled","returned"].includes(o.orderStatus)
+        (o) => !["delivered", "cancelled", "returned"].includes(o.orderStatus),
       ).length,
       color: "text-blue-400",
     },
     {
       name: "Cancelled",
-      value: vendorOrders.filter(o => o.orderStatus === "cancelled").length,
+      value: vendorOrders.filter((o) => o.orderStatus === "cancelled").length,
       color: "text-red-400",
     },
     {
       name: "Returned",
-      value: vendorOrders.filter(o => o.orderStatus === "returned").length,
+      value: vendorOrders.filter((o) => o.orderStatus === "returned").length,
       color: "text-orange-400",
     },
   ];
@@ -132,12 +128,9 @@ export default function VendorDashboardPage() {
   return (
     <div className="min-h-screen px-4 sm:px-6 py-6 text-white">
       <div className="max-w-full mx-auto space-y-6">
-
         {/* HEADER */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <h1 className="text-xl sm:text-2xl font-bold">
-            {userData.shopName}
-          </h1>
+          <h1 className="text-xl sm:text-2xl font-bold">{userData.shopName}</h1>
           <p className="text-xs sm:text-sm text-gray-400 break-all">
             {userData.email}
           </p>
@@ -153,9 +146,7 @@ export default function VendorDashboardPage() {
 
         {/* ================= PIE + STATUS (ABOVE OTHER GRAPHS) ================= */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <h2 className="text-sm font-semibold mb-4">
-            Order Status Overview
-          </h2>
+          <h2 className="text-sm font-semibold mb-4">Order Status Overview</h2>
 
           {/* STATUS BOXES INSIDE SAME CARD */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
@@ -165,9 +156,7 @@ export default function VendorDashboardPage() {
                 className="bg-black/40 border border-white/10 rounded-lg p-3 text-center"
               >
                 <p className="text-xs text-gray-400">{s.name}</p>
-                <p className={`text-xl font-bold ${s.color}`}>
-                  {s.value}
-                </p>
+                <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
               </div>
             ))}
           </div>
@@ -196,12 +185,9 @@ export default function VendorDashboardPage() {
 
         {/* ================= OTHER GRAPHS ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-
           {/* BAR */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 h-[260px] sm:h-[320px]">
-            <h2 className="text-sm font-semibold mb-2">
-              Orders by Date
-            </h2>
+            <h2 className="text-sm font-semibold mb-2">Orders by Date</h2>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={ordersByDate}>
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
@@ -215,9 +201,7 @@ export default function VendorDashboardPage() {
 
           {/* LINE */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 h-[260px] sm:h-[320px]">
-            <h2 className="text-sm font-semibold mb-2">
-              Product Sales
-            </h2>
+            <h2 className="text-sm font-semibold mb-2">Product Sales</h2>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={productSales}>
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
@@ -240,7 +224,6 @@ export default function VendorDashboardPage() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-
         </div>
       </div>
     </div>

@@ -18,11 +18,10 @@ import {
 import { GoListUnordered } from "react-icons/go";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo.png";
 import { signOut } from "next-auth/react";
 import mongoose from "mongoose";
 import axios from "axios";
-
 
 interface IUser {
   _id?: mongoose.Types.ObjectId;
@@ -49,7 +48,7 @@ interface IUser {
 
   /* -------------------- PRODUCT & ORDER REFERENCES -------------------- */
   vendorProducts?: mongoose.Types.ObjectId[]; // ✅ Products created by vendor
-  orders?: mongoose.Types.ObjectId[];         // ✅ Orders placed by user
+  orders?: mongoose.Types.ObjectId[]; // ✅ Orders placed by user
 
   /* -------------------- CART DATA -------------------- */
   cart?: {
@@ -66,60 +65,76 @@ export default function Navbar({ user }: { user: IUser }) {
   const router = useRouter();
   const [cartCount, setCartCount] = useState(0);
 
-const fetchCartCount = async () => {
-  try {
-    const res = await axios.get("/api/cart/get");
+  const fetchCartCount = async () => {
+    try {
+      const res = await axios.get("/api/cart/get");
 
-    if (res.status === 200) {
-      const cart = res.data?.cart || [];
-      const totalQty = cart.reduce(
-        (sum: number, item: any) => sum + item.quantity,
-        0
-      );
+      if (res.status === 200) {
+        const cart = res.data?.cart || [];
+        const totalQty = cart.reduce(
+          (sum: number, item: any) => sum + item.quantity,
+          0,
+        );
 
-      setCartCount(totalQty);
+        setCartCount(totalQty);
+      }
+    } catch (err) {
+      console.log("Navbar cart fetch error:", err);
     }
-  } catch (err) {
-    console.log("Navbar cart fetch error:", err);
-  }
-};
+  };
 
-useEffect(() => {
-  if (user?.role === "user") {
-    fetchCartCount();
-  }
-}, [user]);
-
+  useEffect(() => {
+    if (user?.role === "user") {
+      fetchCartCount();
+    }
+  }, [user]);
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black text-white z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-
         {/* Logo */}
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => router.push("/")}
         >
           <motion.div whileHover={{ rotate: 10, scale: 1.1 }}>
-            <Image src={logo} alt="Logo" width={40} height={40} className="rounded-full" />
+            <Image
+              src={logo}
+              alt="Logo"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
           </motion.div>
-          <span className="text-xl font-semibold hidden sm:inline">MultiCart</span>
+          <span className="text-xl font-semibold hidden sm:inline">
+            SwiftIx
+          </span>
         </div>
 
         {/* Desktop Links */}
-        {user.role == "user" && <div className="hidden md:flex gap-8">
-          <NavItem label="Home" path="/" router={router} />
-          <NavItem label="Categories" path="/category" router={router} />
-          <NavItem label="Shop" path="/shop" router={router} />
-          <NavItem label="Orders" path="/orders" router={router} />
-        </div>}
+        {user.role == "user" && (
+          <div className="hidden md:flex gap-8">
+            <NavItem label="Home" path="/" router={router} />
+            <NavItem label="Categories" path="/category" router={router} />
+            <NavItem label="Shop" path="/shop" router={router} />
+            <NavItem label="Orders" path="/orders" router={router} />
+          </div>
+        )}
 
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center gap-6">
-          {user?.role === "user" && <IconBtn Icon={AiOutlineSearch} onClick={() => router.push("/category")}/>}
+          {user?.role === "user" && (
+            <IconBtn
+              Icon={AiOutlineSearch}
+              onClick={() => router.push("/category")}
+            />
+          )}
 
           {/* ⭐ ADDED SUPPORT ICON HERE */}
-          <IconBtn Icon={AiOutlinePhone} onClick={() => router.push("/support")} />
+          <IconBtn
+            Icon={AiOutlinePhone}
+            onClick={() => router.push("/support")}
+          />
 
           <div className="relative">
             {user?.image ? (
@@ -132,23 +147,35 @@ useEffect(() => {
                 onClick={() => setOpenMenu(!openMenu)}
               />
             ) : (
-              <IconBtn Icon={AiOutlineUser} onClick={() => setOpenMenu(!openMenu)} />
+              <IconBtn
+                Icon={AiOutlineUser}
+                onClick={() => setOpenMenu(!openMenu)}
+              />
             )}
             <AnimatePresence>
-              {openMenu && <ProfileDropdown router={router} close={() => setOpenMenu(false)} />}
+              {openMenu && (
+                <ProfileDropdown
+                  router={router}
+                  close={() => setOpenMenu(false)}
+                />
+              )}
             </AnimatePresence>
           </div>
 
-          {user?.role === "user" && <CartBtn router={router} count={cartCount}/>}
+          {user?.role === "user" && (
+            <CartBtn router={router} count={cartCount} />
+          )}
         </div>
 
         {/* Mobile Icons */}
         <div className="md:hidden flex items-center gap-4">
-
-          {(user?.role === "admin" || user?.role === "vendor") ? (
+          {user?.role === "admin" || user?.role === "vendor" ? (
             <>
               {/* ⭐ MOBILE SUPPORT ICON */}
-              <IconBtn Icon={AiOutlinePhone} onClick={() => router.push("/support")} />
+              <IconBtn
+                Icon={AiOutlinePhone}
+                onClick={() => router.push("/support")}
+              />
 
               <div className="relative">
                 {user?.image ? (
@@ -160,25 +187,42 @@ useEffect(() => {
                     className="w-8 h-8 rounded-full object-cover border border-gray-700 cursor-pointer"
                     onClick={() => setOpenMenu(!openMenu)}
                   />
-
                 ) : (
-                  <IconBtn Icon={AiOutlineUser} onClick={() => setOpenMenu(!openMenu)} />
+                  <IconBtn
+                    Icon={AiOutlineUser}
+                    onClick={() => setOpenMenu(!openMenu)}
+                  />
                 )}
                 <AnimatePresence>
-                  {openMenu && <ProfileDropdown router={router} close={() => setOpenMenu(false)} />}
+                  {openMenu && (
+                    <ProfileDropdown
+                      router={router}
+                      close={() => setOpenMenu(false)}
+                    />
+                  )}
                 </AnimatePresence>
               </div>
             </>
           ) : (
             <>
               {/* Normal user */}
-              <IconBtn Icon={AiOutlineSearch} onClick={() => router.push("/category")} />
+              <IconBtn
+                Icon={AiOutlineSearch}
+                onClick={() => router.push("/category")}
+              />
 
               {/* ⭐ SUPPORT FOR NORMAL USER */}
-              <IconBtn Icon={AiOutlinePhone} onClick={() => router.push("/support")} />
+              <IconBtn
+                Icon={AiOutlinePhone}
+                onClick={() => router.push("/support")}
+              />
 
               <CartBtn router={router} count={cartCount} />
-              <AiOutlineMenu size={28} className="cursor-pointer" onClick={() => setSidebarOpen(true)} />
+              <AiOutlineMenu
+                size={28}
+                className="cursor-pointer"
+                onClick={() => setSidebarOpen(true)}
+              />
             </>
           )}
         </div>
@@ -186,7 +230,13 @@ useEffect(() => {
 
       {/* Sidebar */}
       <AnimatePresence>
-        {sidebarOpen && <Sidebar close={() => setSidebarOpen(false)} router={router} user={user} />}
+        {sidebarOpen && (
+          <Sidebar
+            close={() => setSidebarOpen(false)}
+            router={router}
+            user={user}
+          />
+        )}
       </AnimatePresence>
     </nav>
   );
@@ -222,7 +272,6 @@ const CartBtn = ({ router, count }: any) => (
   </motion.button>
 );
 
-
 const ProfileDropdown = ({ router, close }: any) => (
   <motion.div
     initial={{ opacity: 0, y: -10 }}
@@ -230,9 +279,24 @@ const ProfileDropdown = ({ router, close }: any) => (
     exit={{ opacity: 0, y: -10 }}
     className="absolute right-0 mt-3 w-48 backdrop-blur-lg rounded-xl shadow-lg border bg-[#6a69693c]"
   >
-    <DropdownBtn Icon={AiOutlineUser} label="Profile" onClick={() => router.push("/profile")} close={close} />
-    <DropdownBtn Icon={AiOutlineLogin} label="Sign In" onClick={() => router.push("/login")} close={close} />
-    <DropdownBtn Icon={AiOutlineLogout} label="Sign Out" onClick={signOut} close={close} />
+    <DropdownBtn
+      Icon={AiOutlineUser}
+      label="Profile"
+      onClick={() => router.push("/profile")}
+      close={close}
+    />
+    <DropdownBtn
+      Icon={AiOutlineLogin}
+      label="Sign In"
+      onClick={() => router.push("/login")}
+      close={close}
+    />
+    <DropdownBtn
+      Icon={AiOutlineLogout}
+      label="Sign Out"
+      onClick={signOut}
+      close={close}
+    />
   </motion.div>
 );
 
@@ -262,17 +326,49 @@ const Sidebar = ({ close, router }: any) => (
     </div>
 
     <div className="flex flex-col gap-4 text-lg">
+      <SidebarLink
+        Icon={AiOutlineHome}
+        label="Home"
+        path="/"
+        router={router}
+        close={close}
+      />
+      <SidebarLink
+        Icon={AiOutlineAppstore}
+        label="Categories"
+        path="/category"
+        router={router}
+        close={close}
+      />
+      <SidebarLink
+        Icon={AiOutlineShop}
+        label="Shop"
+        path="/shop"
+        router={router}
+        close={close}
+      />
+      <SidebarLink
+        Icon={GoListUnordered}
+        label="Order"
+        path="/orders"
+        router={router}
+        close={close}
+      />
 
-      <SidebarLink Icon={AiOutlineHome} label="Home" path="/" router={router} close={close} />
-      <SidebarLink Icon={AiOutlineAppstore} label="Categories" path="/category" router={router} close={close} />
-      <SidebarLink Icon={AiOutlineShop} label="Shop" path="/shop" router={router} close={close} />
-      <SidebarLink Icon={GoListUnordered} label="Order" path="/orders" router={router} close={close} />
-
-
-
-      <SidebarLink Icon={AiOutlineUser} label="Profile" path="/profile" router={router} close={close} />
-      <SidebarLink Icon={AiOutlineLogin} label="Login" path="/login" router={router} close={close} />
-
+      <SidebarLink
+        Icon={AiOutlineUser}
+        label="Profile"
+        path="/profile"
+        router={router}
+        close={close}
+      />
+      <SidebarLink
+        Icon={AiOutlineLogin}
+        label="Login"
+        path="/login"
+        router={router}
+        close={close}
+      />
 
       <SidebarSignOut Icon={AiOutlineLogout} label="Sign Out" close={close} />
     </div>
