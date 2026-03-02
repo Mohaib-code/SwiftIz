@@ -7,7 +7,6 @@ import { IUser } from "@/models/user.model";
 export default function Footer({ user }: { user: IUser }) {
   const router = useRouter();
 
-
   const role = user?.role; // "user" | "admin" | "vendor"
 
   const isUser = role === "user";
@@ -25,7 +24,7 @@ export default function Footer({ user }: { user: IUser }) {
             onClick={() => router.push("/")}
             className="text-white text-3xl font-bold cursor-pointer tracking-wide hover:text-blue-400 transition"
           >
-            MultiCart
+            SwiftIx
           </h2>
 
           <p className="text-sm leading-relaxed text-gray-400">
@@ -46,12 +45,34 @@ export default function Footer({ user }: { user: IUser }) {
         {/* ✅ QUICK LINKS - ONLY USER */}
         {isUser && (
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Quick Links
+            </h3>
             <ul className="space-y-2 text-sm">
-              <li onClick={() => router.push("/")} className="cursor-pointer hover:text-white">Home</li>
-              <li onClick={() => router.push("/category")} className="cursor-pointer hover:text-white">Categories</li>
-              <li onClick={() => router.push("/shop")} className="cursor-pointer hover:text-white">Shop</li>
-              <li onClick={() => router.push("/contact")} className="cursor-pointer hover:text-white">Contact</li>
+              <li
+                onClick={() => router.push("/")}
+                className="cursor-pointer hover:text-white"
+              >
+                Home
+              </li>
+              <li
+                onClick={() => router.push("/category")}
+                className="cursor-pointer hover:text-white"
+              >
+                Categories
+              </li>
+              <li
+                onClick={() => router.push("/shop")}
+                className="cursor-pointer hover:text-white"
+              >
+                Shop
+              </li>
+              <li
+                onClick={() => router.push("/contact")}
+                className="cursor-pointer hover:text-white"
+              >
+                Contact
+              </li>
             </ul>
           </div>
         )}
@@ -59,10 +80,22 @@ export default function Footer({ user }: { user: IUser }) {
         {/* ✅ SUPPORT - ONLY USER */}
         {isUser && (
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Help & Support</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">
+              Help & Support
+            </h3>
             <ul className="space-y-2 text-sm">
-              <li onClick={() => router.push("/support")} className="cursor-pointer hover:text-white">Support</li>
-              <li onClick={() => router.push("/orders")} className="cursor-pointer hover:text-white">Track Order</li>
+              <li
+                onClick={() => router.push("/support")}
+                className="cursor-pointer hover:text-white"
+              >
+                Support
+              </li>
+              <li
+                onClick={() => router.push("/orders")}
+                className="cursor-pointer hover:text-white"
+              >
+                Track Order
+              </li>
             </ul>
           </div>
         )}
@@ -91,23 +124,23 @@ export default function Footer({ user }: { user: IUser }) {
                 </>
               )}
             </ul>
-
-            
           </div>
         )}
 
         {/* ✅ CONTACT INFO - ALL */}
         <div className="space-y-2">
-          <h3 className="text-white text-lg font-semibold mb-4">Contact Info</h3>
-          <p className="text-sm">admin@multicart.com</p>
-          <p className="text-sm">+91 98765 43210</p>
-          <p className="text-sm">New Delhi, India</p>
+          <h3 className="text-white text-lg font-semibold mb-4">
+            Contact Info
+          </h3>
+          <p className="text-sm">mohaibmolla1@gmail.com</p>
+          <p className="text-sm">+91 77355 82695</p>
+          <p className="text-sm">Odisha, India</p>
         </div>
       </div>
 
       {/* ✅ BOTTOM BAR */}
       <div className="text-center text-xs text-gray-500 mt-12 border-t border-gray-700 pt-4">
-        © {new Date().getFullYear()} MultiCart — Powered by Secure Commerce Engine
+        © {new Date().getFullYear()} SwiftIx— Powered by Secure Commerce Engine
       </div>
     </footer>
   );

@@ -12,38 +12,33 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
-  const session = useSession()
-  console.log(session?.data?.user)
+  const router = useRouter();
+  const session = useSession();
+  console.log(session?.data?.user);
 
   // Email/password login handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-     
-     const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false, // 🔹 Prevents auto-redirect
-    });
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false, // 🔹 Prevents auto-redirect
+      });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (res?.error) {
-      alert("Invalid Email or Password");
-    } else {
-      router.push("/"); // 🔹 Redirect to Home on Success
-    }
+      if (res?.error) {
+        alert("Invalid Email or Password");
+      } else {
+        router.push("/"); // 🔹 Redirect to Home on Success
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setLoading(false);
     }
-    
-
   };
-
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-6">
@@ -54,7 +49,7 @@ export default function LoginPage() {
         className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl p-8 border border-white/20"
       >
         <h1 className="text-3xl font-semibold text-center mb-8">
-          Welcome Back to <span className="text-blue-400">MultiCart</span>
+          Welcome Back to <span className="text-blue-400">SwiftIx</span>
         </h1>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
@@ -94,7 +89,7 @@ export default function LoginPage() {
             disabled={loading}
             className="bg-gradient-to-r from-blue-500 to-blue-700 py-3 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-50"
           >
-            {loading ? <ClipLoader size={30} color="white"/> : "Login"}
+            {loading ? <ClipLoader size={30} color="white" /> : "Login"}
           </button>
 
           {/* Divider */}
@@ -109,19 +104,17 @@ export default function LoginPage() {
             type="button"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            onClick={()=>signIn("google",{callbackUrl:"/"})}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="flex items-center justify-center gap-3 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-xl transition"
           >
-            <FcGoogle
-              className="w-5 h-5"
-            />
+            <FcGoogle className="w-5 h-5" />
             <span className="font-medium">Login with Google</span>
           </motion.button>
 
           <p className="text-center text-sm mt-4 text-gray-400">
             Don’t have an account?{" "}
             <span
-              onClick={()=>router.push("/signup")}
+              onClick={() => router.push("/signup")}
               className="text-blue-400 hover:underline hover:text-blue-300 transition"
             >
               Create one
